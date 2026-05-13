@@ -8,6 +8,7 @@ from .views import (
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
+    profile
 )
 
 urlpatterns = [
@@ -24,4 +25,6 @@ urlpatterns = [
     path('pages/<int:pk>/edit/', PostUpdateView.as_view(), name='edit'),
 
     path('pages/<int:pk>/delete/', PostDeleteView.as_view(), name='delete'),
+
+    path('profile/', profile, name='profile'),
 ]

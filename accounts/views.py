@@ -4,6 +4,35 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistroForm
 
+from django.shortcuts import render, redirect
+from .forms import ProfileForm
+
+def edit_profile(request):
+    user = request.user
+    profile = user.profile
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid():
+            profile = form.save()
+
+            # guardar datos del user
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.email = form.cleaned_data["email"]
+            user.save()
+
+            return redirect("profile")
+    else:
+        form = ProfileForm(instance=profile, initial={
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+        })
+
+    return render(request, "edit_profile.html", {"form": form})
+
 def login_view(request):
 
     if request.method == 'POST':

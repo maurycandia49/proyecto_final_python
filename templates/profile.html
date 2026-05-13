@@ -1,0 +1,8 @@
+<h1>Mi perfil</h1>
+
+<p>Usuario: {{ user.username }}</p>
+<p>Nombre: {{ user.first_name }}</p>
+<p>Apellido: {{ user.last_name }}</p>
+<p>Email: {{ user.email }}</p>
+
+<a href="{% url 'edit_profile' %}">Editar perfil</a>
