@@ -1,5 +1,8 @@
 # 📝 Mi Blog - Proyecto Final Django
 
+Link del video
+https://youtu.be/hTa8FqgQSM4
+
 Un blog personal moderno, completo y responsive desarrollado con Django y Bootstrap. Permite crear, editar, eliminar y visualizar posts, con un sistema completo de autenticación y mensajería privada.
 
 ## 🌟 Características
