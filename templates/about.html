@@ -1,9 +1,66 @@
 {% extends 'base.html' %}
 
+{% block title %}About - Mi Blog{% endblock %}
+
 {% block content %}
-
-<h1>Acerca de mí</h1>
-
-<p>Mi nombre es Mauri</p>
-
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="https://via.placeholder.com/400x400" alt="Foto de perfil" class="img-fluid rounded-3 shadow">
+        </div>
+        <div class="col-md-6">
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="fas fa-info-circle"></i> Acerca de Mí
+            </h1>
+            <p class="lead">
+                Hola, mi nombre es <strong>Mauri</strong> y bienvenido a mi blog personal.
+            </p>
+            <p>
+                Este es un espacio dedicado a compartir mis pensamientos, experiencias y conocimientos
+                sobre desarrollo web, tecnología y mucho más.
+            </p>
+            <p>
+                Aquí encontrarás artículos interesantes, tutoriales y reflexiones sobre temas que
+                me apasionan. Espero que disfrutes del contenido y que puedas aprender algo nuevo.
+            </p>
+            <div class="mt-4">
+                <a href="{% url 'pages' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-newspaper"></i> Ver Mis Posts
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="my-5">
+    
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Desarrollo Web</h5>
+                    <p class="card-text">Especializado en aplicaciones web modernas y eficientes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-python fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Python & Django</h5>
+                    <p class="card-text">Pasión por crear soluciones robustas y escalables.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Innovación</h5>
+                    <p class="card-text">Siempre buscando nuevas formas de resolver problemas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

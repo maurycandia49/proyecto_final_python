@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Conversación - Mi Blog{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row h-100">
+        <!-- Chat -->
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card shadow-lg">
+                <!-- Header -->
+                <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments"></i>
+                            {% for participante in otros_participantes %}
+                                {{ participante.get_full_name|default:participante.username }}
+                            {% endfor %}
+                        </h5>
+                    </div>
+                    <a href="{% url 'messaging:inbox' %}" class="btn btn-light btn-sm">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </div>
+
+                <!-- Mensajes -->
+                <div class="card-body messages-container" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
+                    {% if mensajes %}
+                        {% for mensaje in mensajes %}
+                            <div class="mb-3">
+                                <div class="d-flex {% if mensaje.remitente == user %}justify-content-end{% else %}justify-content-start{% endif %}">
+                                    <div class="message {% if mensaje.remitente == user %}sent{% else %}received{% endif %}" 
+                                         style="max-width: 70%; padding: 10px 15px; border-radius: 15px; background-color: {% if mensaje.remitente == user %}#667eea{% else %}white{% endif %}; color: {% if mensaje.remitente == user %}white{% else %}black{% endif %}; border: {% if mensaje.remitente == user %}none{% else %}1px solid #dee2e6{% endif %};">
+                                        <p class="mb-1">{{ mensaje.contenido }}</p>
+                                        <small style="opacity: 0.8;">{{ mensaje.fecha_envio|time:"H:i" }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No hay mensajes aún. ¡Comienza la conversación!</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Formulario de envío -->
+                <div class="card-footer bg-light border-top">
+                    <form method="POST" class="d-flex gap-2">
+                        {% csrf_token %}
+                        <div class="flex-grow-1">
+                            {{ form.contenido }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Enviar
+                        </button>
+                    </form>
+                    {% if form.contenido.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            {{ form.contenido.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .messages-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    
+    .message {
+        word-wrap: break-word;
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    // Auto-scroll al último mensaje
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.messages-container');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}

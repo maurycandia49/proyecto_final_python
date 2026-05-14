@@ -1,72 +1,65 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
-from accounts.forms import ProfileForm
-from .models import Post
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
+from .models import Post
 
-@login_required
-def edit_profile(request):
-    user = request.user
-    profile = user.profile
 
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-
-        if form.is_valid():
-            profile = form.save()
-
-            # guardar datos del user
-            user.first_name = form.cleaned_data["first_name"]
-            user.last_name = form.cleaned_data["last_name"]
-            user.email = form.cleaned_data["email"]
-            user.save()
-
-            return redirect("profile")
-    else:
-        form = ProfileForm(instance=profile, initial={
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-        })
-
-    return render(request, "edit_profile.html", {"form": form})
-def profile(request):
-    return render(request, 'profile.html')
 def home(request):
+    """Vista de inicio del blog"""
     return render(request, 'home.html')
 
+
 def about(request):
+    """Vista de información sobre el autor"""
     return render(request, 'about.html')
 
 
+def profile(request):
+    """Vista de perfil de usuario"""
+    return render(request, 'profile.html')
+
+
 class PostListView(ListView):
+    """Vista para listar todos los posts"""
     model = Post
     template_name = 'pages.html'
     context_object_name = 'posts'
+    paginate_by = 10
+
 
 class PostDetailView(DetailView):
+    """Vista para ver detalle de un post"""
     model = Post
     template_name = 'post_detail.html'
     context_object_name = 'post'
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+
+class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    """Vista para crear un nuevo post"""
     model = Post
-    fields = ['titulo', 'subtitulo', 'contenido', 'imagen', 'fecha']
+    fields = ['titulo', 'subtitulo', 'contenido', 'imagen']
     template_name = 'post_form.html'
     success_url = reverse_lazy('pages')
+    success_message = "¡Post creado exitosamente!"
+    login_url = 'login'
 
 
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """Vista para editar un post existente"""
     model = Post
-    fields = ['titulo', 'subtitulo', 'contenido', 'imagen', 'fecha']
+    fields = ['titulo', 'subtitulo', 'contenido', 'imagen']
     template_name = 'post_form.html'
     success_url = reverse_lazy('pages')
+    success_message = "¡Post actualizado exitosamente!"
+    login_url = 'login'
 
 
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    """Vista para eliminar un post"""
     model = Post
     template_name = 'post_confirm_delete.html'
     success_url = reverse_lazy('pages')
+    success_message = "¡Post eliminado exitosamente!"
+    login_url = 'login'

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'blog',
     'accounts',
     'messaging',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,4 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+

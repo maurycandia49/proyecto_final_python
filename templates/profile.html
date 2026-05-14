@@ -1,8 +1,97 @@
-<h1>Mi perfil</h1>
+{% extends 'base.html' %}
 
-<p>Usuario: {{ user.username }}</p>
-<p>Nombre: {{ user.first_name }}</p>
-<p>Apellido: {{ user.last_name }}</p>
-<p>Email: {{ user.email }}</p>
+{% block title %}Mi Perfil - Mi Blog{% endblock %}
 
-<a href="{% url 'edit_profile' %}">Editar perfil</a>
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <!-- Encabezado del perfil -->
+                    <div class="text-center mb-4">
+                        {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="Avatar de {{ user.username }}" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #667eea;">
+                        {% else %}
+                            <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; background-color: #667eea; color: white;">
+                                <i class="fas fa-user fa-3x"></i>
+                            </div>
+                        {% endif %}
+                        <h2 class="fw-bold">{{ user.get_full_name|default:user.username }}</h2>
+                        <p class="text-muted">@{{ user.username }}</p>
+                    </div>
+
+                    <hr>
+
+                    <!-- Información Personal -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">
+                                <i class="fas fa-user"></i> Nombre
+                            </label>
+                            <p class="fs-6 fw-semibold">{{ user.first_name|default:"No especificado" }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">
+                                <i class="fas fa-user"></i> Apellido
+                            </label>
+                            <p class="fs-6 fw-semibold">{{ user.last_name|default:"No especificado" }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <p class="fs-6 fw-semibold">{{ user.email|default:"No especificado" }}</p>
+                    </div>
+
+                    <!-- Biografía -->
+                    {% if user.profile.bio %}
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">
+                            <i class="fas fa-quote-left"></i> Biografía
+                        </label>
+                        <p class="fs-6">{{ user.profile.bio }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Fecha de Nacimiento -->
+                    {% if user.profile.fecha_nacimiento %}
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">
+                            <i class="fas fa-birthday-cake"></i> Fecha de Nacimiento
+                        </label>
+                        <p class="fs-6 fw-semibold">{{ user.profile.fecha_nacimiento|date:"d \\d\\e F \\d\\e Y" }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Fecha de Registro -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">
+                            <i class="fas fa-calendar-alt"></i> Miembro desde
+                        </label>
+                        <p class="fs-6 fw-semibold">{{ user.date_joined|date:"d \\d\\e F \\d\\e Y" }}</p>
+                    </div>
+
+                    <hr>
+
+                    <!-- Botones de Acción -->
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{% url 'edit_profile' %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Editar Perfil
+                        </a>
+                        <a href="{% url 'password_change' %}" class="btn btn-warning">
+                            <i class="fas fa-lock"></i> Cambiar Contraseña
+                        </a>
+                        <a href="{% url 'home' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
